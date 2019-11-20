@@ -204,11 +204,11 @@ private:
 
         // Shifts all cards in discard to the left if a card is missing/moved
         int startpoint = -1;
-        for(int x = 0; x < 24; x++)
+        for(int x = 0; x <= maxdraw; x++)
         {
             if(GB[0][x]->getPH() && !GB[0][x + 1]->getPH())
             {
-                startpoint = ++x;
+                startpoint = x;
                 break;
             }
         }
