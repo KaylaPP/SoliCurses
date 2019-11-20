@@ -214,30 +214,11 @@ private:
         }
         if(startpoint != -1)
         {
-            Card ** shift;
-            int count = 1;
-            for(int x = startpoint; x < 24; x++)
+            for(int x = startpoint; x <= maxdraw; x++)
             {
-                if(GB[0][x]->getPH())
-                {
-                    break;
-                }
-                else
-                {
-                    count++;
-                }
+                GB[0][x] = GB[0][(x + 1)];
+                GB[0][(x + 1)] = PH;
             }
-            shift = new Card * [count];
-            for(int i = startpoint; i < startpoint + count; i++)
-            {
-                shift[i - startpoint] = GB[0][i];
-                GB[0][i] = PH;
-            }
-            for(int i = startpoint - 1; i < startpoint + count - 1; i++)
-            {
-                GB[0][i] = shift[i - startpoint + 1];
-            }
-            delete[] shift
         }
     }
 
