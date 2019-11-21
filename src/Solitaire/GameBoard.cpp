@@ -139,85 +139,6 @@ void GameBoard::undraw()
     }
 }
 
-GameBoard::GameBoard()
-{
-    // Random seed based on time
-    srand(time(NULL));
-
-    // Generate random indices
-    bool repeating = true;
-    int randnums[52];
-    int i;
-    for(i = 0; i < 52; i++)
-    {
-        randnums[i] = rand() % 52;
-    }
-    while(repeating)
-    {
-        repeating = false;
-        for(i = 0; i < 52; i++)
-        {
-            for(int j = 0; j < 52; j++)
-            {
-                if(j != i && randnums[j] == randnums[i])
-                {
-                    randnums[j] = rand() % 52;
-                    repeating = true;
-                }
-            }
-        }
-    }
-
-    // Create 52 cards
-    i = 0;
-    for(int v = 0; v < 13; v++)
-    {
-        for(int s = 0; s < 4; s++)
-        {
-            allcards[randnums[i++]] = new Card(v + 1, suits[s], false);
-        }
-    }
-
-    // Add piles to GB's rows
-    for(i = 0; i < 12; i++)
-    {
-        GB[i] = new Card * [pilelens[i]];
-    }
-
-    // Add PH to GB
-    for(int y = 0; y < 12; y++)
-    {
-        for(int x = 0; x < pilelens[y]; x++)
-        {
-            GB[y][x] = PH;
-        }
-    }
-
-    // Add cards to tableau
-    i = 1;
-    int count = 0;
-    for(int y = 5; y < 12; y++, i++)
-    {
-        for(int x = 0; x < i; x++)
-        {
-            GB[y][x] = allcards[count++];
-        }
-    }
-
-    // Add cards to discard
-    for(i = 28; i < 52; i++)
-    {
-        allcards[i]->reveal();
-        GB[0][i - 28] = allcards[i];
-    }
-
-    // Make all cards not drawn
-    for(i = 0; i < 25; i++)
-    {
-        drawncards[i] = false;
-    }
-}
-
 // Returns a bool representing whether a game is won or not
 bool GameBoard::isWon()
 {
@@ -442,7 +363,7 @@ void GameBoard::draw()
             }
             else
             {
-                return;
+                break;
             }
         }
     }
@@ -656,5 +577,84 @@ void GameBoard::printGB(int boardy, int boardx, bool pilesel, int pileindex)
             attroff(COLOR_PAIR(colorpair));
             attron(COLOR_PAIR(1));
         }
+    }
+}
+
+GameBoard::GameBoard()
+{
+    // Random seed based on time
+    srand(time(NULL));
+
+    // Generate random indices
+    bool repeating = true;
+    int randnums[52];
+    int i;
+    for(i = 0; i < 52; i++)
+    {
+        randnums[i] = rand() % 52;
+    }
+    while(repeating)
+    {
+        repeating = false;
+        for(i = 0; i < 52; i++)
+        {
+            for(int j = 0; j < 52; j++)
+            {
+                if(j != i && randnums[j] == randnums[i])
+                {
+                    randnums[j] = rand() % 52;
+                    repeating = true;
+                }
+            }
+        }
+    }
+
+    // Create 52 cards
+    i = 0;
+    for(int v = 0; v < 13; v++)
+    {
+        for(int s = 0; s < 4; s++)
+        {
+            allcards[randnums[i++]] = new Card(v + 1, suits[s], false);
+        }
+    }
+
+    // Add piles to GB's rows
+    for(i = 0; i < 12; i++)
+    {
+        GB[i] = new Card * [pilelens[i]];
+    }
+
+    // Add PH to GB
+    for(int y = 0; y < 12; y++)
+    {
+        for(int x = 0; x < pilelens[y]; x++)
+        {
+            GB[y][x] = PH;
+        }
+    }
+
+    // Add cards to tableau
+    i = 1;
+    int count = 0;
+    for(int y = 5; y < 12; y++, i++)
+    {
+        for(int x = 0; x < i; x++)
+        {
+            GB[y][x] = allcards[count++];
+        }
+    }
+
+    // Add cards to discard
+    for(i = 28; i < 52; i++)
+    {
+        allcards[i]->reveal();
+        GB[0][i - 28] = allcards[i];
+    }
+
+    // Make all cards not drawn
+    for(i = 0; i < 25; i++)
+    {
+        drawncards[i] = false;
     }
 }
