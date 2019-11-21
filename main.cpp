@@ -3,7 +3,6 @@
 #include <ctime>
 #include <iostream>
 #include <ncurses.h>
-using namespace std;
 
 static const char vals[15] = " A23456789TJQK"; // All possible values of a card
 static const char suits[5] = "cdhs";           // All possible suits of a card
@@ -849,7 +848,7 @@ int main()
     if(has_colors() == FALSE)
     {    
         endwin();
-        cout << "Your terminal does not support color\n";
+        std::cout << "Your terminal does not support color\n";
         exit(1);
     }
     start_color();
@@ -1002,7 +1001,7 @@ int main()
 
     if(win)
     {
-        cout << "Hurray you won!";
+        std::cout << "Hurray you won!";
     }
 
     return 0;

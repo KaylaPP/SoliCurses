@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kevjaro/Documents/GitHub/SoliCurses/main.cpp
+cstdlib
+-
+cstring
+-
+ctime
+-
+iostream
+-
+ncurses.h
+-
+
