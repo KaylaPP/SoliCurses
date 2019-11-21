@@ -1,5 +1,5 @@
-CC=g++
-CFLAGS=-c -g -std=gnu++11
+CC=clang++
+CFLAGS=-pthread -c -g -std=gnu++11
 LDFLAGS=-lncurses -std=gnu++11
 EXECUTABLE=SoliCurses
 BUILD = build/
@@ -9,7 +9,8 @@ SOLDIR = src/Solitaire/
 all : $(EXECUTABLE)
 
 $(EXECUTABLE) : main.o Card.o Consts.o Cursor.o GameBoard.o Key.o Vector.o
-	$(CC) -o $@ $(SRCDIR)main.o $(SOLDIR)Card.o $(SOLDIR)Cursor.o $(SOLDIR)GameBoard.o $(LDFLAGS)
+	$(CC) -o $@ main.o Card.o Cursor.o GameBoard.o $(LDFLAGS)
+	mv *.o $(BUILD)
 
 main.o : $(SRCDIR)main.cpp
 	$(CC) $(CFLAGS) $(SRCDIR)main.cpp

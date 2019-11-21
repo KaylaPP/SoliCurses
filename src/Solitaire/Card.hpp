@@ -14,13 +14,13 @@ private:
 public:
     Card(); // Placeholder constructor
     Card(int v, char s, bool r); // v is val, s is suit, r is revealed
-    void reveal() { revealed = true; } // Flips card face up
-    int getIVal() { return val; }
-    char getSuit() { return suit; }
-    char getCVal() { return vals[val]; }
+    void reveal();
+    int getIVal();
+    char getSuit();
+    char getCVal();
     char getColor();
-    bool getRevealed() { return revealed; }
-    bool getPH() { return placeholder; }
+    bool getRevealed();
+    bool getPH();
     bool equals(Card * card);
 };
 

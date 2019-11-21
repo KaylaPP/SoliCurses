@@ -23,6 +23,36 @@ char Card::getColor()
     return ' ';
 }
 
+bool Card::getRevealed() 
+{ 
+    return revealed;
+}
+
+bool Card::getPH() 
+{ 
+    return placeholder; 
+}
+
+void Card::reveal() // Flips card face up
+{ 
+    revealed = true; 
+}
+    
+int Card::getIVal() 
+{ 
+    return val; 
+}
+    
+char Card::getSuit() 
+{ 
+    return suit; 
+}
+    
+char Card::getCVal() 
+{ 
+    return vals[val]; 
+}
+
 Card::Card() 
 {
     val = 0;
