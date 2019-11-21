@@ -2,9 +2,10 @@
 #include <ctime>
 #include <iostream>
 #include <ncurses.h>
-#include "Solitaire/GameBoard.hpp"
-#include "Solitaire/Cursor.hpp"
-#include "Solitaire/Key.hpp"
+#include "GameBoard.hpp"
+#include "Cursor.hpp"
+#include "Key.hpp"
+#include "main.hpp"
 
 int main() 
 {

@@ -392,53 +392,17 @@ void GameBoard::printGB(int boardy, int boardx, bool pilesel, int pileindex)
 
     printw(" [  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ]");
 
-    Card ** discardprint = new Card * [3];
-    for(int i = 24, count = 2; i >= 0 && count >= 0; i--)
+    for(int i = maxdraw, count = 2; i >= 0; i--)
     {
-        if(drawncards[i] || i < 3)
+        if(i < 3 || drawncards[i])
         {
-            if(drawncards[i])
+            mvprintw(4 + 4 * count--, 0, "AA");
+            if(count < 0)
             {
-                discardprint[count--] = GB[0][i];
-            }
-            else
-            {
-                discardprint[count--] = PH;
+                break;
             }
         }
     }
-
-    for(int i = 0; i < 3; i++)
-    {
-        if(boardx == i && boardy == 0)
-        {
-            if(discardprint[i]->getColor() == 'b')
-            {
-                colorpair = 3;
-            }
-            else
-            {
-                colorpair = 4;
-            }
-        }
-        else
-        {
-            if(discardprint[i]->getColor() == 'b')
-            {
-                colorpair = 1;
-            }
-            else
-            {
-                colorpair = 2;
-            }
-        }
-        attroff(COLOR_PAIR(1));
-        attron(COLOR_PAIR(colorpair));
-        mvprintw(0, 4 + 4 * i, "%c%c", discardprint[i]->getCVal(), discardprint[i]->getSuit());
-        attroff(COLOR_PAIR(colorpair));
-        attron(COLOR_PAIR(1));
-    }
-    delete[] discardprint;
 
     for(int i = 3; i < 19; i++)
     {
@@ -582,6 +546,12 @@ void GameBoard::printGB(int boardy, int boardx, bool pilesel, int pileindex)
 
 GameBoard::GameBoard()
 {
+    // Set private values
+    maxdraw = 23;               // An inclusive number for the max index of drawn cards
+    PH = new Card();            // Placeholder card to prevent segfaults
+    allcards = new Card * [52]; // Original 52 cards
+    GB = new Card ** [12];      // 12 rows of varying length card piles
+
     // Random seed based on time
     srand(time(NULL));
 
