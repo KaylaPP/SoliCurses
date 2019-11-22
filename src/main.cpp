@@ -5,7 +5,6 @@
 #include "GameBoard.hpp"
 #include "Cursor.hpp"
 #include "Key.hpp"
-#include "main.hpp"
 
 int main() 
 {
