@@ -12,8 +12,8 @@ enum Key
     e = 101,
     y = 121,
     Y = 89,
-    one = 49, 
-    three = 51 
+    oneKey = 49, 
+    threeKey = 51 
 };
 
 #endif

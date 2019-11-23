@@ -4,7 +4,8 @@
 #include <ncurses.h>
 #include "GameBoard.hpp"
 #include "Cursor.hpp"
-#include "Key.hpp"
+#include "Key.h"
+#include "DrawType.h"
 
 int main() 
 {
@@ -29,8 +30,7 @@ int main()
     keypad(stdscr, true);
     noecho();
     
-    // Create gameboard, cursors, and key input
-    GameBoard * board = new GameBoard();
+    // Create cursors and key input
     Cursor * cardcursor = new Cursor(12, 19);
     Cursor * pilecursor = new Cursor(12, 1);
     Key input;
@@ -42,16 +42,20 @@ int main()
         refresh();
         input = (Key) getch();
         clear();
-    } while(input != Key::one && input != Key::three);
+    } while(input != Key::oneKey && input != Key::threeKey);
 
-    if(input == Key::one)
+    DrawType drawtype;
+
+    if(input == Key::oneKey)
     {
-        drawtype = 1;
+        drawtype = DrawType::one;
     }
     else
     {
-        drawtype = 3;
+        drawtype = DrawType::three;
     }
+
+    GameBoard * board = new GameBoard(drawtype);
 
     input = Key::d;                     // First turn command is draw
     Key checkexit;                      // Check if you want to exit

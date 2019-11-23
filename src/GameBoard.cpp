@@ -2,9 +2,10 @@
 #include <ctime>
 #include <ncurses.h>
 #include "GameBoard.hpp"
-#include "Vector.hpp"
+#include "Vector.h"
 #include "Card.hpp"
-#include "Consts.hpp"
+#include "Consts.h"
+#include "DrawType.h"
 
 // Returns the last card in a given pile
 Card * GameBoard::last(int y)
@@ -355,7 +356,7 @@ void GameBoard::draw()
     }
     if(startpoint != -1) // Draw 1 or 3 cards
     {
-        for(int i = startpoint; i < startpoint + drawtype; i++)
+        for(int i = startpoint; i < startpoint + (int) drawtype; i++)
         {
             if(i <= maxdraw)
             {
@@ -392,17 +393,53 @@ void GameBoard::printGB(int boardy, int boardx, bool pilesel, int pileindex)
 
     printw(" [  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ][  ]");
 
-    for(int i = maxdraw, count = 2; i >= 0; i--)
+    Card ** discardprint = new Card * [3];
+    for(int i = 24, count = 2; i >= 0 && count >= 0; i--)
     {
-        if(i < 3 || drawncards[i])
+        if(drawncards[i] || i < 3)
         {
-            mvprintw(4 + 4 * count--, 0, "AA");
-            if(count < 0)
+            if(drawncards[i])
             {
-                break;
+                discardprint[count--] = GB[0][i];
+            }
+            else
+            {
+                discardprint[count--] = PH;
             }
         }
     }
+
+    for(int i = 0; i < 3; i++)
+    {
+        if(boardx == i && boardy == 0)
+        {
+            if(discardprint[i]->getColor() == 'b')
+            {
+                colorpair = 3;
+            }
+            else
+            {
+                colorpair = 4;
+            }
+        }
+        else
+        {
+            if(discardprint[i]->getColor() == 'b')
+            {
+                colorpair = 1;
+            }
+            else
+            {
+                colorpair = 2;
+            }
+        }
+        attroff(COLOR_PAIR(1));
+        attron(COLOR_PAIR(colorpair));
+        mvprintw(0, 4 + 4 * i, "%c%c", discardprint[i]->getCVal(), discardprint[i]->getSuit());
+        attroff(COLOR_PAIR(colorpair));
+        attron(COLOR_PAIR(1));
+    }
+    delete[] discardprint;
 
     for(int i = 3; i < 19; i++)
     {
@@ -542,11 +579,13 @@ void GameBoard::printGB(int boardy, int boardx, bool pilesel, int pileindex)
             attron(COLOR_PAIR(1));
         }
     }
+
 }
 
-GameBoard::GameBoard()
+GameBoard::GameBoard(DrawType draw)
 {
     // Set private values
+    drawtype = draw;
     maxdraw = 23;               // An inclusive number for the max index of drawn cards
     PH = new Card();            // Placeholder card to prevent segfaults
     allcards = new Card * [52]; // Original 52 cards

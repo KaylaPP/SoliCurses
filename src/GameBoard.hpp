@@ -1,7 +1,8 @@
 #include <cstdlib>
 #include "Card.hpp"
-#include "Vector.hpp"
-#include "Consts.hpp"
+#include "Vector.h"
+#include "Consts.h"
+#include "DrawType.h"
 
 #ifndef GAMEBOARD_H
 # define GAMEBOARD_H
@@ -11,6 +12,7 @@ class GameBoard
 private:
     //int points;             // Current score
     int maxdraw;            // An inclusive number for the max index of drawn cards
+    DrawType drawtype;      // The drawtype of a game of Solitaire (1 or 3)
     bool drawncards[25];    // true for drawn cards, false for not
     Card * PH = new Card(); // Placeholder card to prevent segfaults
     Card ** allcards;       // Original 52 cards
@@ -22,7 +24,7 @@ private:
     void decreaseDrawMax();
     void undraw();
 public:
-    GameBoard();
+    GameBoard(DrawType draw);
     bool isWon();
     bool moveCard(int boardy, int boardx, int pileindex);
     void deallocate();

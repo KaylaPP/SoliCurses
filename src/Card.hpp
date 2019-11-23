@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include "Consts.hpp"
+#include "Consts.h"
 
 #ifndef CARD_H
 # define CARD_H
