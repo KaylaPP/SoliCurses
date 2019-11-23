@@ -67,7 +67,7 @@ int main()
     while(!endgame)
     {
         board->printGB(cardcursor->getY(), cardcursor->getX(), !cardmode, pilecursor->getY());
-        mvprintw(12, 0, "%s\n", gamemessage);
+        mvprintw(12, 20, "%s\n", gamemessage);
         gamemessage = (char *) "";
         refresh();
         if(board->isWon())

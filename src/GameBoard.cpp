@@ -192,6 +192,7 @@ bool GameBoard::moveCard(int boardy, int boardx, int pileindex)
                     GB[pileindex][0] = last(0);
                     GB[locationOf(last(0)).y][locationOf(last(0)).x] = PH;
                     decreaseDrawMax();
+                    points += 10;
                     return true;
                 }
                 else if(last(pileindex)->getSuit() == last(0)->getSuit() && last(pileindex)->getIVal() == last(0)->getIVal() - 1)
@@ -199,6 +200,7 @@ bool GameBoard::moveCard(int boardy, int boardx, int pileindex)
                     GB[pileindex][locationOf(last(pileindex)).x + 1] = last(0);
                     GB[locationOf(last(0)).y][locationOf(last(0)).x] = PH;
                     decreaseDrawMax();
+                    points += 10;
                     return true;
                 }
             }
@@ -209,6 +211,7 @@ bool GameBoard::moveCard(int boardy, int boardx, int pileindex)
                     GB[pileindex][0] = last(boardy);
                     GB[locationOf(last(boardy)).y][locationOf(last(boardy)).x] = PH;
                     decreaseDrawMax();
+                    points += 5;
                     return true;
                 }
                 for(int x = 0; x < pilelens[pileindex]; x++)
@@ -223,6 +226,7 @@ bool GameBoard::moveCard(int boardy, int boardx, int pileindex)
                         GB[pileindex][x] = last(boardy);
                         GB[locationOf(last(boardy)).y][locationOf(last(boardy)).x] = PH;
                         decreaseDrawMax();
+                        points += 5;
                         return true;
                     }
                 }
@@ -244,6 +248,11 @@ bool GameBoard::moveCard(int boardy, int boardx, int pileindex)
                 {
                     GB[pileindex][x] = last(boardy);
                     GB[locationOf(last(boardy)).y][locationOf(last(boardy)).x] = PH;
+                    points -= 15;
+                    if(points < 0)
+                    {
+                        points = 0;
+                    }
                     return true;
                 }
             }
@@ -257,12 +266,14 @@ bool GameBoard::moveCard(int boardy, int boardx, int pileindex)
                 {
                     GB[pileindex][0] = last(boardy);
                     GB[boardy][boardx] = PH;
+                    points += 10;
                     return true;
                 }
                 else if(last(pileindex)->getSuit() == last(boardy)->getSuit() && last(pileindex)->getIVal() == last(boardy)->getIVal() - 1)
                 {
                     GB[pileindex][locationOf(last(pileindex)).x + 1] = last(boardy);
                     GB[boardy][boardx] = PH;
+                    points += 10;
                     return true;
                 }
         }
@@ -370,6 +381,14 @@ void GameBoard::draw()
     }
     else // Put all cards back in the deck
     {
+        if(drawtype == DrawType::one)
+        {
+            points -= 100;
+            if(points < 0)
+            {
+                points = 0;
+            }
+        }
         undraw();
     }
 }
@@ -378,6 +397,9 @@ void GameBoard::draw()
 void GameBoard::printGB(int boardy, int boardx, bool pilesel, int pileindex)
 {
     boardRefresh();
+
+    // Print points
+    mvprintw(12, 0, "Points: %d\n", points);
 
     // Print discard
     int colorpair = 1;

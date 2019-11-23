@@ -10,7 +10,7 @@
 class GameBoard
 {
 private:
-    //int points;             // Current score
+    int points = 0;         // Current score
     int maxdraw;            // An inclusive number for the max index of drawn cards
     DrawType drawtype;      // The drawtype of a game of Solitaire (1 or 3)
     bool drawncards[25];    // true for drawn cards, false for not
