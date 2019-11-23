@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include "Card.hpp"
+#include "Consts.h"
 
 bool Card::equals(Card * card)
 {
