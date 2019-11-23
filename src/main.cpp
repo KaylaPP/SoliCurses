@@ -72,7 +72,6 @@ int main()
         mvprintw(12, 20, "%s\n", gamemessage);
         mvprintw(13, 0, "\n");
         mvprintw(13, 0, "Elapsed Time: %d seconds", time(NULL) - starttime);
-        gamemessage = (char *) "";
         refresh();
         if(board->isWon())
         {
@@ -98,12 +97,14 @@ int main()
             default:
                 break;
             case Key::d:
+                gamemessage = (char *) "";
                 if(cardmode)
                 {
                     board->draw();
                 }
                 break;
             case Key::e:
+                gamemessage = (char *) "";
                 clear();
                 printw("Are you sure you want to exit? (y/n)");
                 refresh();
@@ -117,6 +118,7 @@ int main()
                 } while(checkexit != Key::y && checkexit != Key::Y && checkexit != Key::n && checkexit != Key::N);
                 break;
             case Key::uarrow:
+                gamemessage = (char *) "";
                 if(cardmode)
                 {
                     cardcursor->moveUp();
@@ -127,6 +129,7 @@ int main()
                 }
                 break;
             case Key::darrow:
+                gamemessage = (char *) "";
                 if(cardmode)
                 {
                     cardcursor->moveDown();
@@ -137,18 +140,21 @@ int main()
                 }
                 break;
             case Key::larrow:
+                gamemessage = (char *) "";
                 if(cardmode)
                 {
                     cardcursor->moveLeft();
                 }
                 break;
             case Key::rarrow:
+                gamemessage = (char *) "";
                 if(cardmode)
                 {
                     cardcursor->moveRight();
                 }
                 break;
             case Key::spacebar:
+                gamemessage = (char *) "";
                 if(cardmode)
                 {
                     cardmode = false;
