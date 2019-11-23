@@ -10,6 +10,8 @@ enum Key
     spacebar = 32, 
     d = 100, 
     e = 101,
+    n = 110,
+    N = 78,
     y = 121,
     Y = 89,
     oneKey = 49, 

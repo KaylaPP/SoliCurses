@@ -29,6 +29,7 @@ int main()
     raw();
     keypad(stdscr, true);
     noecho();
+    halfdelay(1);
     
     // Create cursors and key input
     Cursor * cardcursor = new Cursor(12, 19);
@@ -59,6 +60,7 @@ int main()
 
     input = Key::d;                     // First turn command is draw
     Key checkexit;                      // Check if you want to exit
+    int starttime = time(NULL);         // Starting time, in seconds, of the game 
     char * gamemessage = (char *) "\n"; // Game message that details user or programmer error
     bool first_turn = true;             // Game starts on turn 1
     bool cardmode = true;               // Select cards in gameboard if true, piles if not
@@ -68,6 +70,8 @@ int main()
     {
         board->printGB(cardcursor->getY(), cardcursor->getX(), !cardmode, pilecursor->getY());
         mvprintw(12, 20, "%s\n", gamemessage);
+        mvprintw(13, 0, "\n");
+        mvprintw(13, 0, "Elapsed Time: %d seconds", time(NULL) - starttime);
         gamemessage = (char *) "";
         refresh();
         if(board->isWon())
@@ -89,6 +93,8 @@ int main()
         {
             case Key::y:
             case Key::Y:
+            case Key::n:
+            case Key::N:
             default:
                 break;
             case Key::d:
@@ -99,13 +105,16 @@ int main()
                 break;
             case Key::e:
                 clear();
-                printw("Are you sure you want to exit? (y/N)");
+                printw("Are you sure you want to exit? (y/n)");
                 refresh();
-                checkexit = (Key) getch();
-                if(checkexit == Key::y || checkexit == Key::Y)
+                do
                 {
-                    endgame = true;
-                }
+                    checkexit = (Key) getch();
+                    if(checkexit == Key::y || checkexit == Key::Y)
+                    {
+                        endgame = true;
+                    }
+                } while(checkexit != Key::y && checkexit != Key::Y && checkexit != Key::n && checkexit != Key::N);
                 break;
             case Key::uarrow:
                 if(cardmode)
