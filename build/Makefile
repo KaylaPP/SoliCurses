@@ -3,7 +3,7 @@
 CC=clang++
 CFLAGS=-pthread -c -g -std=gnu++11
 LDFLAGS=-lncurses -std=gnu++11
-EXECUTABLE=SoliCurses
+EXECUTABLE=SoliCurses.out
 SRCDIR = ../src/
 
 #Finds all the cpp files in the source directory
