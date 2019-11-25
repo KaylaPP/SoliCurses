@@ -98,8 +98,8 @@ int main()
                 if(cardmode)
                 {
                     board->draw();
+                    first_turn = false;
                 }
-                first_turn = false;
                 break;
             case Key::e:
                 gamemessage = (char *) "";
