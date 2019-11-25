@@ -1,11 +1,11 @@
 #include <cstdlib>
 #include <ctime>
 #include <ncurses.h>
-#include "GameBoard.hpp"
-#include "Vector.h"
 #include "Card.hpp"
 #include "Consts.h"
 #include "DrawType.h"
+#include "GameBoard.hpp"
+#include "Vector.h"
 
 // ALPHABETICAL ORDER
 GameBoard::GameBoard(DrawType draw)

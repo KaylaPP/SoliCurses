@@ -2,10 +2,10 @@
 #include <ctime>
 #include <iostream>
 #include <ncurses.h>
-#include "GameBoard.hpp"
 #include "Cursor.hpp"
-#include "Key.h"
 #include "DrawType.h"
+#include "GameBoard.hpp"
+#include "Key.h"
 
 int main() 
 {

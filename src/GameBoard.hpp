@@ -1,8 +1,8 @@
 #include <cstdlib>
 #include "Card.hpp"
-#include "Vector.h"
 #include "Consts.h"
 #include "DrawType.h"
+#include "Vector.h"
 
 #ifndef GAMEBOARD_H
 # define GAMEBOARD_H
