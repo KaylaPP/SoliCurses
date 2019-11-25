@@ -17,7 +17,7 @@ To compile and run the program:
     
     make
     
-    ./SoliCurses
+    ./SoliCurses.out
 
 # How To Play
 
