@@ -79,13 +79,10 @@ int main()
             endgame = true;
             break;
         }
-        if(!first_turn)
+        input = (Key) getch();
+        if(first_turn)
         {
-            input = (Key) getch();
-        }
-        else
-        {
-            first_turn = false;
+            starttime = time(NULL);
         }
 
         switch(input)
@@ -102,6 +99,7 @@ int main()
                 {
                     board->draw();
                 }
+                first_turn = false;
                 break;
             case Key::e:
                 gamemessage = (char *) "";
@@ -159,8 +157,9 @@ int main()
                 {
                     cardmode = false;
                 }
-                else if(!first_turn)
+                else
                 {
+                    first_turn = false;
                     cardmode = true;
                     if(!board->moveCard(cardcursor->getY(), cardcursor->getX(), pilecursor->getY()))
                     {
@@ -169,6 +168,7 @@ int main()
                     else
                     {
                         gamemessage = (char *) "";
+                        first_turn = false;
                     }
                 }
                 break;
