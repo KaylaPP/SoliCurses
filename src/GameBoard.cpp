@@ -7,134 +7,88 @@
 #include "Consts.h"
 #include "DrawType.h"
 
-// Returns the last card in a given pile
-Card * GameBoard::last(int y)
+// ALPHABETICAL ORDER
+GameBoard::GameBoard(DrawType draw)
 {
-    if(y != 0)
-    {
-        for(int x = pilelens[y] - 1; x >= 0; x--)
-        {
-            if(!GB[y][x]->getPH())
-            {
-                return GB[y][x];
-            }
-        }
-        return GB[y][0];
-    }
-    else
-    {
-        for(int x = 24; x >=0; x--)
-        {
-            if(drawncards[x])
-            {
-                return GB[0][x];
-            }
-        }
-        return GB[0][0];
-    }
-}
+    // Set private values
+    drawtype = draw;
+    maxdraw = 23;               // An inclusive number for the max index of drawn cards
+    PH = new Card();            // Placeholder card to prevent segfaults
+    allcards = new Card * [52]; // Original 52 cards
+    GB = new Card ** [12];      // 12 rows of varying length card piles
 
-Vector GameBoard::locationOf(Card * card)
-{
-    Vector location;
-    location.y = -1;
-    location.x = -1;
+    // Random seed based on time
+    srand(time(NULL));
+
+    // Generate random indices
+    bool repeating = true;
+    int randnums[52];
+    int i;
+    for(i = 0; i < 52; i++)
+    {
+        randnums[i] = rand() % 52;
+    }
+    while(repeating)
+    {
+        repeating = false;
+        for(i = 0; i < 52; i++)
+        {
+            for(int j = 0; j < 52; j++)
+            {
+                if(j != i && randnums[j] == randnums[i])
+                {
+                    randnums[j] = rand() % 52;
+                    repeating = true;
+                }
+            }
+        }
+    }
+
+    // Create 52 cards
+    i = 0;
+    for(int v = 0; v < 13; v++)
+    {
+        for(int s = 0; s < 4; s++)
+        {
+            allcards[randnums[i++]] = new Card(v + 1, suits[s], false);
+        }
+    }
+
+    // Add piles to GB's rows
+    for(i = 0; i < 12; i++)
+    {
+        GB[i] = new Card * [pilelens[i]];
+    }
+
+    // Add PH to GB
     for(int y = 0; y < 12; y++)
     {
         for(int x = 0; x < pilelens[y]; x++)
         {
-            if(GB[y][x]->equals(card))
-            {
-                location.y = y;
-                location.x = x;
-                return location;
-            }
+            GB[y][x] = PH;
         }
     }
-    return location;
-}
 
-Vector GameBoard::locationOf(Card * card, int y)
-{
-    Vector location;
-    location.y = y;
-    location.x = -1;
-    for(int x = 0; x < pilelens[y]; x++)
+    // Add cards to tableau
+    i = 1;
+    int count = 0;
+    for(int y = 5; y < 12; y++, i++)
     {
-        if(GB[y][x]->equals(card))
+        for(int x = 0; x < i; x++)
         {
-            location.x = x;
-            return location;
-        }
-    }
-    return location;
-}
-
-// Checks and fixes the gameboard
-void GameBoard::boardRefresh()
-{
-    // Checks for null pointers and replaces with placeholder
-    for(int y = 0; y < 12; y++)
-    {
-        for(int x = 0; x < pilelens[y]; x++)
-        {
-            if(GB[y][x] == nullptr)
-            {
-                GB[y][x] = PH;
-            }
+            GB[y][x] = allcards[count++];
         }
     }
 
-    // Checks for reveals last cards in tableau
-    for(int y = 5; y < 12; y++)
+    // Add cards to discard
+    for(i = 28; i < 52; i++)
     {
-        last(y)->reveal();
+        allcards[i]->reveal();
+        GB[0][i - 28] = allcards[i];
     }
 
-    // Shifts all cards in discard to the left if a card is missing/moved
-    int startpoint = -1;
-    for(int x = 0; x <= maxdraw; x++)
-    {
-        if(GB[0][x]->getPH() && !GB[0][x + 1]->getPH())
-        {
-            startpoint = x;
-            break;
-        }
-    }
-    if(startpoint != -1)
-    {
-        for(int x = startpoint; x <= maxdraw; x++)
-        {
-            GB[0][x] = GB[0][(x + 1)];
-            GB[0][(x + 1)] = PH;
-        }
-    }
-}
-
-// Makes last in drawncards false and decrease maximum cards by 1
-void GameBoard::decreaseDrawMax()
-{
-    if(--maxdraw < -1)
-    {
-        maxdraw = -1;
-    }
-    if(maxdraw != -1)
-    {
-        for(int i = 24; i >= 0; i--)
-        {
-            if(drawncards[i])
-            {
-                drawncards[i] = false;
-                break;
-            }
-        }
-    }
-}
-
-// Make all items in drawncards false
-void GameBoard::undraw()
-{
-    for(int i = 0; i < 25; i++)
+    // Make all cards not drawn
+    for(i = 0; i < 25; i++)
     {
         drawncards[i] = false;
     }
@@ -335,6 +289,111 @@ bool GameBoard::moveCard(int boardy, int boardx, int pileindex)
     return false;
 }
 
+// Returns the last card in a given pile
+Card * GameBoard::last(int y)
+{
+    if(y != 0)
+    {
+        for(int x = pilelens[y] - 1; x >= 0; x--)
+        {
+            if(!GB[y][x]->getPH())
+            {
+                return GB[y][x];
+            }
+        }
+        return GB[y][0];
+    }
+    else
+    {
+        for(int x = 24; x >=0; x--)
+        {
+            if(drawncards[x])
+            {
+                return GB[0][x];
+            }
+        }
+        return GB[0][0];
+    }
+}
+
+// Returns location of a card as a vector
+Vector GameBoard::locationOf(Card * card)
+{
+    Vector location;
+    location.y = -1;
+    location.x = -1;
+    for(int y = 0; y < 12; y++)
+    {
+        for(int x = 0; x < pilelens[y]; x++)
+        {
+            if(GB[y][x]->equals(card))
+            {
+                location.y = y;
+                location.x = x;
+                return location;
+            }
+        }
+    }
+    return location;
+}
+
+Vector GameBoard::locationOf(Card * card, int y)
+{
+    Vector location;
+    location.y = y;
+    location.x = -1;
+    for(int x = 0; x < pilelens[y]; x++)
+    {
+        if(GB[y][x]->equals(card))
+        {
+            location.x = x;
+            return location;
+        }
+    }
+    return location;
+}
+
+// Checks and fixes the gameboard
+void GameBoard::boardRefresh()
+{
+    // Checks for null pointers and replaces with placeholder
+    for(int y = 0; y < 12; y++)
+    {
+        for(int x = 0; x < pilelens[y]; x++)
+        {
+            if(GB[y][x] == nullptr)
+            {
+                GB[y][x] = PH;
+            }
+        }
+    }
+
+    // Checks for reveals last cards in tableau
+    for(int y = 5; y < 12; y++)
+    {
+        last(y)->reveal();
+    }
+
+    // Shifts all cards in discard to the left if a card is missing/moved
+    int startpoint = -1;
+    for(int x = 0; x <= maxdraw; x++)
+    {
+        if(GB[0][x]->getPH() && !GB[0][x + 1]->getPH())
+        {
+            startpoint = x;
+            break;
+        }
+    }
+    if(startpoint != -1)
+    {
+        for(int x = startpoint; x <= maxdraw; x++)
+        {
+            GB[0][x] = GB[0][(x + 1)];
+            GB[0][(x + 1)] = PH;
+        }
+    }
+}
+
 // Deallocates all pointers
 void GameBoard::deallocate()
 {
@@ -351,6 +410,26 @@ void GameBoard::deallocate()
         delete[] GB[i];
     }
     delete[] GB;
+}
+
+// Makes last in drawncards false and decrease maximum cards by 1
+void GameBoard::decreaseDrawMax()
+{
+    if(--maxdraw < -1)
+    {
+        maxdraw = -1;
+    }
+    if(maxdraw != -1)
+    {
+        for(int i = 24; i >= 0; i--)
+        {
+            if(drawncards[i])
+            {
+                drawncards[i] = false;
+                break;
+            }
+        }
+    }
 }
 
 // Draws 1 or 3 cards
@@ -604,87 +683,10 @@ void GameBoard::printGB(int boardy, int boardx, bool pilesel, int pileindex)
 
 }
 
-GameBoard::GameBoard(DrawType draw)
+// Make all items in drawncards false
+void GameBoard::undraw()
 {
-    // Set private values
-    drawtype = draw;
-    maxdraw = 23;               // An inclusive number for the max index of drawn cards
-    PH = new Card();            // Placeholder card to prevent segfaults
-    allcards = new Card * [52]; // Original 52 cards
-    GB = new Card ** [12];      // 12 rows of varying length card piles
-
-    // Random seed based on time
-    srand(time(NULL));
-
-    // Generate random indices
-    bool repeating = true;
-    int randnums[52];
-    int i;
-    for(i = 0; i < 52; i++)
-    {
-        randnums[i] = rand() % 52;
-    }
-    while(repeating)
-    {
-        repeating = false;
-        for(i = 0; i < 52; i++)
-        {
-            for(int j = 0; j < 52; j++)
-            {
-                if(j != i && randnums[j] == randnums[i])
-                {
-                    randnums[j] = rand() % 52;
-                    repeating = true;
-                }
-            }
-        }
-    }
-
-    // Create 52 cards
-    i = 0;
-    for(int v = 0; v < 13; v++)
-    {
-        for(int s = 0; s < 4; s++)
-        {
-            allcards[randnums[i++]] = new Card(v + 1, suits[s], false);
-        }
-    }
-
-    // Add piles to GB's rows
-    for(i = 0; i < 12; i++)
-    {
-        GB[i] = new Card * [pilelens[i]];
-    }
-
-    // Add PH to GB
-    for(int y = 0; y < 12; y++)
-    {
-        for(int x = 0; x < pilelens[y]; x++)
-        {
-            GB[y][x] = PH;
-        }
-    }
-
-    // Add cards to tableau
-    i = 1;
-    int count = 0;
-    for(int y = 5; y < 12; y++, i++)
-    {
-        for(int x = 0; x < i; x++)
-        {
-            GB[y][x] = allcards[count++];
-        }
-    }
-
-    // Add cards to discard
-    for(i = 28; i < 52; i++)
-    {
-        allcards[i]->reveal();
-        GB[0][i - 28] = allcards[i];
-    }
-
-    // Make all cards not drawn
-    for(i = 0; i < 25; i++)
+    for(int i = 0; i < 25; i++)
     {
         drawncards[i] = false;
     }

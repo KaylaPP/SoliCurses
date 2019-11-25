@@ -2,15 +2,6 @@
 #include "Card.hpp"
 #include "Consts.h"
 
-bool Card::equals(Card * card)
-{
-    if(card->getCVal() == getCVal() && card->getSuit() == getSuit())
-    {
-        return true;
-    }
-    return false;
-}
-
 char Card::getColor()
 {
     if(suit == 's' || suit == 'c' || getPH() || !getRevealed())
@@ -24,9 +15,23 @@ char Card::getColor()
     return ' ';
 }
 
-bool Card::getRevealed() 
+bool Card::equals(Card * card)
+{
+    if(card->getCVal() == getCVal() && card->getSuit() == getSuit())
+    {
+        return true;
+    }
+    return false;
+}
+
+char Card::getCVal() 
 { 
-    return revealed;
+    return vals[val]; 
+}
+
+int Card::getIVal() 
+{ 
+    return val; 
 }
 
 bool Card::getPH() 
@@ -34,24 +39,19 @@ bool Card::getPH()
     return placeholder; 
 }
 
-void Card::reveal() // Flips card face up
+bool Card::getRevealed() 
 { 
-    revealed = true; 
+    return revealed;
 }
-    
-int Card::getIVal() 
-{ 
-    return val; 
-}
-    
+
 char Card::getSuit() 
 { 
     return suit; 
 }
-    
-char Card::getCVal() 
+
+void Card::reveal() // Flips card face up
 { 
-    return vals[val]; 
+    revealed = true; 
 }
 
 Card::Card() 
