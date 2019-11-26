@@ -178,14 +178,17 @@ int main()
     // Ending operations
     endwin();
     board->deallocate();
-    delete board;
     delete cardcursor;
     delete pilecursor;
 
     if(win)
     {
-        std::cout << "Hurray you won!";
+        std::cout << "Hurray you won!\n";
     }
+
+    std::cout << "You earned " << board->getPoints() <<" points.\n";
+
+    delete board;
 
     return 0;
 }

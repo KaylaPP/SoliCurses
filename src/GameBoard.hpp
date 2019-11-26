@@ -27,6 +27,7 @@ public:
     GameBoard(DrawType draw);
     bool isWon();
     bool moveCard(int boardy, int boardx, int pileindex);
+    int getPoints();
     void deallocate();
     void draw();
     void printGB(int boardy, int boardx, bool pilesel, int pileindex);

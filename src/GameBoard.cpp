@@ -316,6 +316,12 @@ Card * GameBoard::last(int y)
     }
 }
 
+// Returns amount of points earned in the game
+int GameBoard::getPoints()
+{
+    return points;
+}
+
 // Returns location of a card as a vector
 Vector GameBoard::locationOf(Card * card)
 {
@@ -460,7 +466,7 @@ void GameBoard::draw()
     }
     else // Put all cards back in the deck
     {
-        if(drawtype == DrawType::one)
+        if(drawtype == DrawType::one && !GB[0][0]->getPH())
         {
             points -= 100;
             if(points < 0)
