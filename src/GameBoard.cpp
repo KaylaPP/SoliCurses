@@ -94,6 +94,24 @@ GameBoard::GameBoard(DrawType draw)
     }
 }
 
+// Deallocates all pointers
+GameBoard::~GameBoard()
+{
+    delete PH;
+
+    for(int i = 0; i < 52; i++)
+    {
+        delete allcards[i];
+    }
+    delete[] allcards;
+
+    for(int i = 0; i < 12; i++)
+    {
+        delete[] GB[i];
+    }
+    delete[] GB;
+}
+
 // Returns a bool representing whether a game is won or not
 bool GameBoard::isWon()
 {
@@ -398,24 +416,6 @@ void GameBoard::boardRefresh()
             GB[0][(x + 1)] = PH;
         }
     }
-}
-
-// Deallocates all pointers
-void GameBoard::deallocate()
-{
-    delete PH;
-
-    for(int i = 0; i < 52; i++)
-    {
-        delete allcards[i];
-    }
-    delete[] allcards;
-
-    for(int i = 0; i < 12; i++)
-    {
-        delete[] GB[i];
-    }
-    delete[] GB;
 }
 
 // Makes last in drawncards false and decrease maximum cards by 1
