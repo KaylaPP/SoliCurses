@@ -5,11 +5,11 @@ To compile and run this program, you need:
     
     clang++
     
-    make
+    GNU make
     
-    ncurses
+    ncurses.h
     
-    *nix CLI
+    Unix-like terminal environment
 
 To compile and run the program:
 
