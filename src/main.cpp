@@ -7,6 +7,11 @@
 #include "GameBoard.hpp"
 #include "Key.h"
 
+Key getKey()
+{
+    return (Key) getch();
+}
+
 int main() 
 {
     // Initialize ncurses terminal mode
@@ -41,7 +46,7 @@ int main()
     {
         printw("Would you like to play draw 3 or draw 1? (1/3)");
         refresh();
-        input = (Key) getch();
+        input =  getKey();
         clear();
     } while(input != Key::oneKey && input != Key::threeKey);
 
@@ -79,7 +84,7 @@ int main()
             endgame = true;
             break;
         }
-        input = (Key) getch();
+        input =  getKey();
         if(first_turn)
         {
             starttime = time(NULL);
@@ -108,7 +113,7 @@ int main()
                 refresh();
                 do
                 {
-                    checkexit = (Key) getch();
+                    checkexit =  getKey();
                     if(checkexit == Key::y || checkexit == Key::Y)
                     {
                         endgame = true;
