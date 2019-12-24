@@ -25,3 +25,6 @@ $(EXECUTABLE) : ${OBJECTS}
 
 clean : 
 	rm -rf *.o ${EXECUTABLE}
+
+run :
+	./$(EXECUTABLE)

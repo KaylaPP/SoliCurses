@@ -11,13 +11,17 @@ To compile and run this program, you need:
     
     Unix-like terminal environment
 
-To compile and run the program:
+To compile the program:
 
     cd build
     
     make
+
+To run the program:
+
+    cd build
     
-    ./SoliCurses.out
+    make run
 
 # How To Play
 
