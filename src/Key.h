@@ -7,15 +7,16 @@ enum Key
     darrow = 258, 
     larrow = 260, 
     rarrow = 261, 
-    spacebar = 32, 
-    d = 100, 
-    e = 101,
-    n = 110,
-    N = 78,
-    y = 121,
-    Y = 89,
-    oneKey = 49, 
-    threeKey = 51 
+    spacebar = ' ', 
+    d = 'd', 
+    e = 'e',
+    n = 'n',
+    N = 'N',
+    u = 'u',
+    y = 'y',
+    Y = 'Y',
+    oneKey = '1', 
+    threeKey = '3' 
 };
 
 #endif
