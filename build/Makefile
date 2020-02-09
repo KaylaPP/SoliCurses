@@ -1,6 +1,6 @@
 #Makefile courtesy of u/downiedowndown on reddit
 
-CC=clang++
+CC=g++
 CFLAGS=-pthread -c -g -std=gnu++11
 LDFLAGS=-lncurses -std=gnu++11
 EXECUTABLE=SoliCurses.out
@@ -17,7 +17,6 @@ all : $(EXECUTABLE)
 # $^ is all the things in OBJECTS
 $(EXECUTABLE) : ${OBJECTS}
 	$(CC) -o $@ $^ $(LDFLAGS)
-	rm -rf ./*.o
 
 # %.o is anything ending in .o in the current dir. This is reliant on finding something with the name name but with .cpp extension in the source directory
 %.o : $(SRCDIR)/%.cpp
