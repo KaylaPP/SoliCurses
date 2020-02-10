@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
-#include <ncurses.h>
+#include <curses.h>
 #include "Cursor.hpp"
 #include "DrawType.h"
 #include "GameBoard.hpp"

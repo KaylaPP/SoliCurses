@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include <ctime>
-#include <ncurses.h>
+#include <curses.h>
 #include "Card.hpp"
 #include "Consts.h"
 #include "DrawType.h"
