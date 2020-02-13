@@ -3,11 +3,11 @@ A version of Solitaire written in C++ using the ncurses library
 
 To compile and run this program, you need:
     
-    clang++
+    g++
     
     GNU make
     
-    ncurses.h
+    ncurses library
     
     Unix-like terminal environment
 
